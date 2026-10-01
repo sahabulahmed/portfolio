@@ -93,6 +93,34 @@ let html = `<!DOCTYPE html>
     .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 
+    .hero-name-gradient {
+      background: linear-gradient(135deg, #00d4ff 0%, #00ffcc 50%, #ff2d78 100%);
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      background-clip: text !important;
+      color: #00d4ff;
+      display: inline-block;
+    }
+    .btn-gradient-cyan {
+      background: linear-gradient(135deg, #00d4ff 0%, #00ffcc 100%) !important;
+      color: #030b18 !important;
+      font-weight: 700 !important;
+      box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3) !important;
+    }
+    .btn-gradient-cyan:hover {
+      box-shadow: 0 0 30px rgba(0, 212, 255, 0.6) !important;
+      transform: translateY(-2px) scale(1.03) !important;
+    }
+
+    .orbit-node {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      will-change: transform;
+      z-index: 5;
+    }
+
     @keyframes floatUp {
       0% { transform: translateY(0) rotate(0deg); opacity: 0.15; }
       50% { transform: translateY(-250px) rotate(180deg); opacity: 0.25; }
@@ -307,31 +335,32 @@ let html = `<!DOCTYPE html>
         <div class="flex justify-center md:justify-start relative order-2 md:order-1 animate-slideInLeft">
           <div class="relative w-[320px] h-[320px] sm:w-[360px] sm:h-[360px] md:w-[400px] md:h-[400px] lg:w-[420px] lg:h-[420px]">
             
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-[260px] sm:w-[300px] sm:h-[300px] md:w-[310px] md:h-[310px]">
-              <div class="w-full h-full rounded-full border border-dashed border-[rgba(0,212,255,0.15)] animate-spin-slow"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] sm:w-[280px] sm:h-[280px] md:w-[290px] md:h-[290px]">
+              <div class="w-full h-full rounded-full border border-dashed border-[rgba(0,212,255,0.2)] animate-spin-slow"></div>
             </div>
             
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[320px] sm:w-[360px] sm:h-[360px] md:w-[380px] md:h-[380px]">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[330px] h-[330px] sm:w-[370px] sm:h-[370px] md:w-[380px] md:h-[380px]">
               <div class="w-full h-full rounded-full border border-dashed border-[rgba(0,212,255,0.15)] animate-spin-slower"></div>
             </div>
 
             ${orbitNodes.map((n, idx) => `
-              <div id="orbit-node-${idx}" class="orbit-node absolute top-1/2 left-1/2 flex flex-col items-center gap-1 group cursor-pointer">
-                <div class="w-[46px] h-[46px] sm:w-[52px] sm:h-[52px] rounded-[14px] bg-card2 border border-border flex items-center justify-center transition-all duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.3)] group-hover:border-cyan group-hover:shadow-[0_0_20px_rgba(0,212,255,0.3)] group-hover:scale-110">
+              <div id="orbit-node-${idx}" class="orbit-node flex flex-col items-center gap-1 group cursor-pointer">
+                <div class="w-[44px] h-[44px] sm:w-[48px] sm:h-[48px] rounded-[14px] bg-[#0d1f35] border border-[#1a3050] flex items-center justify-center transition-all duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.4)] group-hover:border-cyan group-hover:shadow-[0_0_20px_rgba(0,212,255,0.4)] group-hover:scale-110">
                   ${n.svg}
                 </div>
                 <span class="text-[0.55rem] sm:text-[0.6rem] text-muted whitespace-nowrap font-medium">${n.name}</span>
               </div>
             `).join('')}
 
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] sm:w-[230px] sm:h-[230px] md:w-[240px] md:h-[240px] z-10 flex items-center justify-center">
-              <div class="w-full h-full rounded-full overflow-hidden border-[3px] border-[rgba(0,212,255,0.4)] shadow-[0_0_60px_rgba(0,212,255,0.25),inset_0_0_60px_rgba(0,212,255,0.05)] animate-photo-float relative bg-[#0b1329]">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180px] h-[180px] sm:w-[210px] sm:h-[210px] md:w-[220px] md:h-[220px] z-10 flex items-center justify-center">
+              <div class="w-full h-full rounded-full overflow-hidden border-[3px] border-[rgba(0,212,255,0.5)] shadow-[0_0_60px_rgba(0,212,255,0.3),inset_0_0_40px_rgba(0,212,255,0.1)] animate-photo-float relative bg-[#0b1329]">
                 <img src="/photo.webp" alt="Sahabul Ahmed Asraf" class="w-full h-full object-cover object-top scale-105">
               </div>
             </div>
 
-            <div class="absolute bg-gradient-to-r from-[#0a1428] via-[#112244] to-[#0a1428] border border-cyan-400/40 rounded-2xl px-6 py-3 text-[0.82rem] font-medium text-white whitespace-nowrap backdrop-blur-xl shadow-[0_10px_30px_rgba(0,212,255,0.2)] bottom-[16%] sm:bottom-[18%] left-1/3 -translate-x-1/2 animate-tag-float2 z-20">
-              <span class="font-bold text-[#00f0ff]">Full Stack</span> Web Developer
+            <div class="absolute bg-[#0a1428]/95 border border-cyan/40 rounded-full px-5 py-2 text-[0.8rem] font-semibold text-white whitespace-nowrap backdrop-blur-xl shadow-[0_10px_30px_rgba(0,212,255,0.25)] -bottom-2 sm:-bottom-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-cyan animate-pulse"></span>
+              <span><span class="text-cyan font-bold">Full Stack</span> Web Developer</span>
             </div>
 
           </div>
@@ -343,40 +372,40 @@ let html = `<!DOCTYPE html>
             ${portfolio.hero.availability}
           </div>
 
-          <h1 class="font-syne text-[clamp(2.3rem,4.8vw,4.2rem)] font-extrabold leading-[1.08] mb-4">
-            <span class="text-white">Hi, I'm<br></span>
-            <span class="bg-gradient-to-br from-cyan via-cyan2 to-pink text-transparent bg-clip-text">${portfolio.hero.name}</span>
+          <h1 class="font-syne text-[clamp(2.4rem,4.8vw,4.2rem)] font-extrabold leading-[1.1] mb-4">
+            <span class="text-white">Hi, I'm</span><br>
+            <span class="hero-name-gradient">${portfolio.hero.name}</span>
           </h1>
 
-          <p class="text-[1.2rem] sm:text-[1.25rem] font-semibold mb-8 tracking-[0.5px] h-[38px] flex items-center justify-center md:justify-start">
-            <span class="mr-2">✦</span>
-            <span id="typed-text" class="text-green-400">Full Stack Web Developer</span>
+          <p class="text-[1.2rem] sm:text-[1.25rem] font-semibold mb-6 tracking-[0.5px] h-[38px] flex items-center justify-center md:justify-start gap-2">
+            <span class="text-cyan">✦</span>
+            <span id="typed-text" class="text-green-400 font-mono">Full Stack Web Developer</span>
             <span class="animate-blink text-cyan ml-0.5">|</span>
           </p>
 
-          <p class="text-muted leading-[1.75] max-w-[480px] mb-8 mx-auto md:mx-0 text-[0.95rem] sm:text-base">
+          <p class="text-muted leading-[1.75] max-w-[500px] mb-8 mx-auto md:mx-0 text-[0.95rem] sm:text-base">
             ${portfolio.hero.tagline}
           </p>
 
-          <div class="flex gap-4 flex-wrap mb-8 justify-center md:justify-start items-center min-h-[50px]">
-            <a href="#projects" id="hero-work-btn" class="bg-gradient-to-br from-cyan to-cyan2 text-black px-7 py-[0.75rem] rounded-full font-bold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(0,212,255,0.35)] flex items-center justify-center gap-2">
+          <div class="flex gap-4 flex-wrap mb-8 justify-center md:justify-start items-center">
+            <a href="#projects" id="hero-work-btn" class="btn-gradient-cyan px-7 py-3 rounded-full font-bold transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2 no-underline text-black">
               <span>View My Work</span>
             </a>
             
-            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" class="bg-transparent text-text px-7 py-[0.75rem] rounded-full font-semibold border-[1.5px] border-[rgba(0,212,255,0.3)] transition-all duration-300 hover:border-cyan hover:text-cyan hover:-translate-y-0.5 flex items-center gap-2">
+            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" class="bg-transparent text-white px-7 py-3 rounded-full font-semibold border-[1.5px] border-cyan/40 transition-all duration-300 hover:border-cyan hover:text-cyan hover:scale-105 flex items-center gap-2 no-underline shadow-md">
               ${icons.download}
               <span>View Resume (CV)</span>
             </a>
           </div>
 
           <div class="flex gap-3 justify-center md:justify-start">
-            <a href="${portfolio.hero.github}" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="w-[42px] h-[42px] border border-border rounded-full flex items-center justify-center text-muted hover:border-cyan hover:text-cyan hover:-translate-y-[3px] hover:bg-[rgba(0,212,255,0.08)] transition-all">
+            <a href="${portfolio.hero.github}" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="w-10 h-10 rounded-full border border-border bg-[#0b1329] flex items-center justify-center text-muted hover:border-cyan hover:text-cyan hover:scale-110 hover:shadow-[0_0_15px_rgba(0,212,255,0.3)] transition-all duration-300">
               ${icons.github}
             </a>
-            <a href="${portfolio.hero.linkedin}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="w-[42px] h-[42px] border border-border rounded-full flex items-center justify-center text-muted hover:border-cyan hover:text-cyan hover:-translate-y-[3px] hover:bg-[rgba(0,212,255,0.08)] transition-all">
+            <a href="${portfolio.hero.linkedin}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="w-10 h-10 rounded-full border border-border bg-[#0b1329] flex items-center justify-center text-muted hover:border-cyan hover:text-cyan hover:scale-110 hover:shadow-[0_0_15px_rgba(0,212,255,0.3)] transition-all duration-300">
               ${icons.linkedin}
             </a>
-            <a href="${portfolio.hero.facebook}" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="w-[42px] h-[42px] border border-border rounded-full flex items-center justify-center text-muted hover:border-cyan hover:text-cyan hover:-translate-y-[3px] hover:bg-[rgba(0,212,255,0.08)] transition-all">
+            <a href="${portfolio.hero.facebook}" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="w-10 h-10 rounded-full border border-border bg-[#0b1329] flex items-center justify-center text-muted hover:border-cyan hover:text-cyan hover:scale-110 hover:shadow-[0_0_15px_rgba(0,212,255,0.3)] transition-all duration-300">
               ${icons.facebook}
             </a>
           </div>
@@ -1282,7 +1311,7 @@ let html = `<!DOCTYPE html>
         { ring: 2, angle: 6 * Math.PI / 5 },
         { ring: 2, angle: 8 * Math.PI / 5 }
       ];
-      const radii = { 1: 155, 2: 190 };
+      const radii = { 1: 135, 2: 180 };
       const nodes = Array.from({ length: 9 }, (_, i) => document.getElementById('orbit-node-' + i));
 
       function animate() {
@@ -1290,26 +1319,21 @@ let html = `<!DOCTYPE html>
         orbits.forEach((orb, i) => {
           const node = nodes[i];
           if (!node) return;
-          const speed = orb.ring === 1 ? 0.6 : 0.4;
-          const dir = orb.ring === 2 ? -1 : 1;
-          const theta = orb.angle + now * speed * dir;
+          const speed = orb.ring === 1 ? 0.35 : -0.25;
+          const theta = orb.angle + now * speed;
           const r = radii[orb.ring];
-          const x = r * Math.cos(theta) - 26;
-          const y = r * Math.sin(theta) - 26;
-          node.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+          const x = r * Math.cos(theta);
+          const y = r * Math.sin(theta);
+          node.style.transform = 'translate(calc(-50% + ' + x.toFixed(1) + 'px), calc(-50% + ' + y.toFixed(1) + 'px))';
         });
         requestAnimationFrame(animate);
       }
       animate();
     })();
 
-    document.getElementById('hero-work-btn').addEventListener('click', function(e) {
+    document.getElementById('hero-work-btn')?.addEventListener('click', function(e) {
       e.preventDefault();
-      this.innerHTML = '<span class="inline-block w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></span> <span>Loading Projects...</span>';
-      setTimeout(() => {
-        this.innerHTML = '<span>View My Work</span>';
-        document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
-      }, 700);
+      document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
     });
 
     const statObserver = new IntersectionObserver((entries) => {
