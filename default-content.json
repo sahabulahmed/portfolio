@@ -189,31 +189,38 @@
       "institution": "UYlab",
       "period": "2 Months Intensive",
       "description": "Hands-on training in Facebook Ads campaigns, Google Ads, email marketing, Facebook page optimization, and audience targeting."
+    },
+    {
+      "type": "training",
+      "title": "Spoken English Excellence Course",
+      "institution": "UY Lab",
+      "period": "Aug 2024 – Nov 2024",
+      "description": "Focused on advanced spoken English, corporate communication skills, and professional presentation mastery."
     }
   ],
   "certificates": [
     {
       "id": "cert-1",
-      "title": "Full Stack Web Development",
-      "organization": "Programming Hero",
-      "date": "Frontend & Full Stack Training",
-      "imageUrl": "/cert-1.png",
+      "title": "Basic UI/UX Design",
+      "organization": "Southeast University — Dept. of CSE",
+      "date": "Nov 2024 – Jan 2025",
+      "imageUrl": "/cert-uiux-design.jpg",
       "documentUrl": ""
     },
     {
       "id": "cert-2",
-      "title": "UI/UX Design Bootcamp",
-      "organization": "Southeast University",
-      "date": "2 Months Intensive Bootcamp",
-      "imageUrl": "/cert-2.png",
+      "title": "Professional Online Digital Marketing",
+      "organization": "UY LAB",
+      "date": "Sep 2023 – Nov 2023",
+      "imageUrl": "/cert-digital-marketing.png",
       "documentUrl": ""
     },
     {
       "id": "cert-3",
-      "title": "Digital Marketing",
-      "organization": "UY Lab Institute",
-      "date": "Facebook Ads, Google Ads & Optimization",
-      "imageUrl": "/cert-3.png",
+      "title": "Spoken English Excellence",
+      "organization": "UY Lab",
+      "date": "Aug 2024 – Nov 2024",
+      "imageUrl": "/cert-spoken-english.jpg",
       "documentUrl": ""
     }
   ],

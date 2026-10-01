@@ -565,12 +565,10 @@ let html = `<!DOCTYPE html>
                   <button type="button" onclick="openCertModal(${i})" class="text-xs font-semibold text-cyan hover:underline flex items-center gap-1 cursor-pointer">
                     Preview
                   </button>
-                  ${c.documentUrl ? `
-                    <a href="${c.documentUrl}" target="_blank" rel="noopener noreferrer" class="text-xs text-muted hover:text-white flex items-center gap-1">
-                      <span>Document</span>
-                      ${icons.external}
-                    </a>
-                  ` : ''}
+                  <a href="${c.documentUrl || c.imageUrl}" target="_blank" rel="noopener noreferrer" class="text-xs text-muted hover:text-white flex items-center gap-1">
+                    <span>Full View</span>
+                    ${icons.external}
+                  </a>
                 </div>
               </div>
             </div>
@@ -1289,12 +1287,8 @@ let html = `<!DOCTYPE html>
       document.getElementById('cert-modal-org').textContent = c.organization + ' (' + c.date + ')';
       
       const docLink = document.getElementById('cert-modal-doc');
-      if (c.documentUrl) {
-        docLink.href = c.documentUrl;
-        docLink.classList.remove('hidden');
-      } else {
-        docLink.classList.add('hidden');
-      }
+      docLink.href = c.documentUrl || c.imageUrl;
+      docLink.classList.remove('hidden');
 
       const modal = document.getElementById('cert-modal');
       modal.classList.remove('hidden');
