@@ -112,13 +112,141 @@ let html = `<!DOCTYPE html>
       transform: translateY(-2px) scale(1.03) !important;
     }
 
+    /* Hero Orbit Section with Exact Center Geometry */
+    .hero-orbit-wrapper {
+      position: relative;
+      width: 420px;
+      height: 420px;
+      max-width: 90vw;
+      max-height: 90vw;
+      margin: 0 auto;
+    }
+
+    .orbit-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      border-radius: 50%;
+      border: 1.5px dashed rgba(0, 212, 255, 0.2);
+      pointer-events: none;
+    }
+    .orbit-ring-1 {
+      width: 270px;
+      height: 270px;
+      transform: translate(-50%, -50%);
+      animation: spinSlow 35s linear infinite;
+    }
+    .orbit-ring-2 {
+      width: 370px;
+      height: 370px;
+      transform: translate(-50%, -50%);
+      animation: spinSlower 45s linear infinite;
+    }
+
+    .hero-photo-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 190px;
+      height: 190px;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      animation: centerPhotoFloat 5s ease-in-out infinite;
+    }
+
+    @keyframes centerPhotoFloat {
+      0%, 100% {
+        transform: translate(-50%, -50%) translateY(0);
+      }
+      50% {
+        transform: translate(-50%, -50%) translateY(-10px);
+      }
+    }
+
+    .hero-photo-circle {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3.5px solid rgba(0, 212, 255, 0.6);
+      box-shadow: 0 0 50px rgba(0, 212, 255, 0.35), inset 0 0 30px rgba(0, 212, 255, 0.15);
+      background-color: #0b1329;
+    }
+    .hero-photo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      transform: scale(1.05);
+    }
+
+    .hero-badge {
+      position: absolute;
+      bottom: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(10, 20, 40, 0.95);
+      border: 1px solid rgba(0, 212, 255, 0.45);
+      border-radius: 9999px;
+      padding: 6px 16px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #ffffff;
+      white-space: nowrap;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 25px rgba(0, 212, 255, 0.25);
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hero-badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: #00d4ff;
+      animation: blink 1.2s infinite;
+    }
+
     .orbit-node {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      cursor: pointer;
+      z-index: 15;
       will-change: transform;
-      z-index: 5;
+    }
+    .orbit-node-card {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background-color: #0d1f35;
+      border: 1px solid #1a3050;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .orbit-node:hover .orbit-node-card {
+      transform: scale(1.15);
+      border-color: #00d4ff;
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+    }
+    .orbit-node-name {
+      font-size: 0.58rem;
+      font-weight: 500;
+      color: #7a9bb5;
+      white-space: nowrap;
+      transition: color 0.2s ease;
+    }
+    .orbit-node:hover .orbit-node-name {
+      color: #00d4ff;
     }
 
     @keyframes floatUp {
@@ -333,34 +461,31 @@ let html = `<!DOCTYPE html>
       <div class="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-8 lg:gap-16 items-center px-4 md:px-[5%] flex-grow content-center py-8">
         
         <div class="flex justify-center md:justify-start relative order-2 md:order-1 animate-slideInLeft">
-          <div class="relative w-[320px] h-[320px] sm:w-[360px] sm:h-[360px] md:w-[400px] md:h-[400px] lg:w-[420px] lg:h-[420px]">
+          <div class="hero-orbit-wrapper">
             
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] sm:w-[280px] sm:h-[280px] md:w-[290px] md:h-[290px]">
-              <div class="w-full h-full rounded-full border border-dashed border-[rgba(0,212,255,0.2)] animate-spin-slow"></div>
-            </div>
-            
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[330px] h-[330px] sm:w-[370px] sm:h-[370px] md:w-[380px] md:h-[380px]">
-              <div class="w-full h-full rounded-full border border-dashed border-[rgba(0,212,255,0.15)] animate-spin-slower"></div>
-            </div>
+            <!-- Concentric Orbit Rings -->
+            <div class="orbit-ring orbit-ring-1"></div>
+            <div class="orbit-ring orbit-ring-2"></div>
 
+            <!-- Orbit Nodes -->
             ${orbitNodes.map((n, idx) => `
-              <div id="orbit-node-${idx}" class="orbit-node flex flex-col items-center gap-1 group cursor-pointer">
-                <div class="w-[44px] h-[44px] sm:w-[48px] sm:h-[48px] rounded-[14px] bg-[#0d1f35] border border-[#1a3050] flex items-center justify-center transition-all duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.4)] group-hover:border-cyan group-hover:shadow-[0_0_20px_rgba(0,212,255,0.4)] group-hover:scale-110">
+              <div id="orbit-node-${idx}" class="orbit-node">
+                <div class="orbit-node-card">
                   ${n.svg}
                 </div>
-                <span class="text-[0.55rem] sm:text-[0.6rem] text-muted whitespace-nowrap font-medium">${n.name}</span>
+                <span class="orbit-node-name">${n.name}</span>
               </div>
             `).join('')}
 
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180px] h-[180px] sm:w-[210px] sm:h-[210px] md:w-[220px] md:h-[220px] z-10 flex items-center justify-center">
-              <div class="w-full h-full rounded-full overflow-hidden border-[3px] border-[rgba(0,212,255,0.5)] shadow-[0_0_60px_rgba(0,212,255,0.3),inset_0_0_40px_rgba(0,212,255,0.1)] animate-photo-float relative bg-[#0b1329]">
-                <img src="/photo.webp" alt="Sahabul Ahmed Asraf" class="w-full h-full object-cover object-top scale-105">
+            <!-- Center Photo with Floating Badge -->
+            <div class="hero-photo-container">
+              <div class="hero-photo-circle">
+                <img src="/photo.webp" alt="Sahabul Ahmed Asraf" class="hero-photo-img">
               </div>
-            </div>
-
-            <div class="absolute bg-[#0a1428]/95 border border-cyan/40 rounded-full px-5 py-2 text-[0.8rem] font-semibold text-white whitespace-nowrap backdrop-blur-xl shadow-[0_10px_30px_rgba(0,212,255,0.25)] -bottom-2 sm:-bottom-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-cyan animate-pulse"></span>
-              <span><span class="text-cyan font-bold">Full Stack</span> Web Developer</span>
+              <div class="hero-badge">
+                <span class="hero-badge-dot"></span>
+                <span><span class="text-cyan font-bold">Full Stack</span> Web Developer</span>
+              </div>
             </div>
 
           </div>
@@ -1311,7 +1436,7 @@ let html = `<!DOCTYPE html>
         { ring: 2, angle: 6 * Math.PI / 5 },
         { ring: 2, angle: 8 * Math.PI / 5 }
       ];
-      const radii = { 1: 135, 2: 180 };
+      const radii = { 1: 135, 2: 185 };
       const nodes = Array.from({ length: 9 }, (_, i) => document.getElementById('orbit-node-' + i));
 
       function animate() {
