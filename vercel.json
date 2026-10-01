@@ -1,1 +1,9 @@
-{ "rewrites": [{ "source": "/admin", "destination": "/admin.html" }] }
+{
+  "outputDirectory": ".",
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/api/data", "destination": "/portfolio-data.json" },
+    { "source": "/api/resume/view", "destination": "/resume.pdf" }
+  ]
+}
