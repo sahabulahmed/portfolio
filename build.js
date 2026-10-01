@@ -71,6 +71,7 @@ let html = `<!DOCTYPE html>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="/styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
   
   <style>
     .bg-dark { background-color: #030b18; }
@@ -100,6 +101,115 @@ let html = `<!DOCTYPE html>
     .drift-icon {
       position: absolute;
       animation: floatUp 12s linear infinite;
+    }
+
+    /* Floating Action Buttons */
+    #back-to-top {
+      position: fixed !important;
+      bottom: 24px !important;
+      left: 24px !important;
+      z-index: 99999 !important;
+      width: 48px !important;
+      height: 48px !important;
+      border-radius: 50% !important;
+      background-color: #0b1329 !important;
+      border: 1.5px solid #00d4ff !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      color: #00d4ff !important;
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.35) !important;
+      cursor: pointer !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+    }
+    #back-to-top:hover {
+      background-color: #00d4ff !important;
+      color: #000000 !important;
+      transform: scale(1.1) translateY(0) !important;
+      box-shadow: 0 0 25px rgba(0, 212, 255, 0.6) !important;
+    }
+    #back-to-top.show {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+      pointer-events: auto !important;
+    }
+
+    #floating-contact {
+      position: fixed !important;
+      bottom: 24px !important;
+      right: 24px !important;
+      z-index: 99999 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-end !important;
+      gap: 12px !important;
+    }
+    #fc-menu {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 12px !important;
+      align-items: center !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      opacity: 0;
+      transform: translateY(16px) scale(0.9);
+      pointer-events: none;
+      visibility: hidden;
+    }
+    #fc-menu.active {
+      opacity: 1 !important;
+      transform: translateY(0) scale(1) !important;
+      pointer-events: auto !important;
+      visibility: visible !important;
+    }
+    .fc-link-btn {
+      width: 46px !important;
+      height: 46px !important;
+      border-radius: 50% !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important;
+      transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+      text-decoration: none !important;
+    }
+    .fc-link-btn:hover {
+      transform: scale(1.15) !important;
+    }
+    #fc-tooltip {
+      background-color: #111f38 !important;
+      border: 1px solid #1a3050 !important;
+      color: #ffffff !important;
+      padding: 6px 12px !important;
+      border-radius: 8px !important;
+      font-size: 13px !important;
+      font-weight: 700 !important;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
+      transition: opacity 0.25s ease, transform 0.25s ease !important;
+      white-space: nowrap !important;
+      pointer-events: none !important;
+    }
+    #fc-toggle {
+      width: 54px !important;
+      height: 54px !important;
+      border-radius: 50% !important;
+      background: linear-gradient(135deg, #8b5cf6, #7a40f2) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      color: #ffffff !important;
+      cursor: pointer !important;
+      border: none !important;
+      box-shadow: 0 0 20px rgba(122, 64, 242, 0.5) !important;
+      transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+      position: relative !important;
+    }
+    #fc-toggle:hover {
+      transform: scale(1.08) !important;
+      box-shadow: 0 0 25px rgba(122, 64, 242, 0.7) !important;
     }
   </style>
 </head>
@@ -984,6 +1094,35 @@ let html = `<!DOCTYPE html>
     </div>
   </div>
 
+  <!-- Floating Actions -->
+  <button id="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Back to top">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+  </button>
+
+  <div id="floating-contact" onmouseleave="closeFloatingContact()">
+    <div id="fc-menu">
+      <a href="https://t.me/+8801581737320" target="_blank" rel="noopener noreferrer" aria-label="Telegram" class="fc-link-btn" style="background-color: #0088cc;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.89 8.21l-2 9.4c-.15.65-.53.81-1.07.5l-2.96-2.18-1.43 1.38c-.16.16-.29.29-.6.29l.21-3.03 5.51-4.98c.24-.21-.05-.33-.37-.11l-6.81 4.29-2.94-.92c-.64-.2-.65-.64.13-.95l11.49-4.43c.53-.19 1 .12.84 1.04z"/></svg>
+      </a>
+      <a href="mailto:${portfolio.about.email}" aria-label="Email" class="fc-link-btn" style="background-color: #ea4335;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      </a>
+      <a href="https://wa.me/8801581737320" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="fc-link-btn" style="background-color: #25D366;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12.01 2.01c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.8 3.1 1.22 4.76 1.22 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.91-9.91-9.91zm5.36 14.16c-.22.63-1.28 1.16-1.78 1.22-.44.05-.98.11-2.93-.65-2.35-.92-3.87-3.32-3.99-3.48-.11-.15-.95-1.26-.95-2.4 0-1.14.59-1.71.8-1.92.21-.21.46-.27.61-.27.15 0 .3 0 .44.01.16.01.37-.06.56.4.21.5.54 1.31.59 1.41.05.11.08.23.01.35-.06.11-.1.18-.21.28-.11.11-.23.24-.32.33-.11.1-.23.21-.11.42.12.21.54.89 1.15 1.44.79.71 1.46.93 1.67 1.04.21.11.34.09.47-.05.12-.15.54-.63.69-.85.15-.22.3-.18.49-.11.2.07 1.23.58 1.44.69.21.11.35.16.4.26.05.11.05.6-.17 1.23z"/></svg>
+      </a>
+    </div>
+    
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div id="fc-tooltip">
+        Contact Me
+      </div>
+      <button id="fc-toggle" onclick="toggleFloatingContact(true)" aria-label="Toggle contact menu">
+        <svg id="fc-icon-open" style="position: absolute; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); transform: scale(1); opacity: 1;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path><circle cx="8" cy="11" r="1.5" fill="currentColor"></circle><circle cx="12" cy="11" r="1.5" fill="currentColor"></circle><circle cx="16" cy="11" r="1.5" fill="currentColor"></circle></svg>
+        <svg id="fc-icon-close" style="position: absolute; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); transform: scale(0.5); opacity: 0;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+  </div>
+
   <script>
     const PORTFOLIO_DATA = ${JSON.stringify(portfolio)};
 
@@ -1375,6 +1514,53 @@ let html = `<!DOCTYPE html>
         setTimeout(() => { status.textContent = ''; }, 5000);
       }, 1000);
     });
+
+    // Back to Top Button visibility
+    const btt = document.getElementById('back-to-top');
+    function updateBackToTop() {
+      if (window.scrollY > 250) {
+        btt.classList.add('show');
+      } else {
+        btt.classList.remove('show');
+      }
+    }
+    window.addEventListener('scroll', updateBackToTop, { passive: true });
+    updateBackToTop();
+
+    // Floating Contact Actions
+    let fcOpen = false;
+    function toggleFloatingContact(forceToggle = false) {
+      if(forceToggle) fcOpen = !fcOpen;
+      const menu = document.getElementById('fc-menu');
+      const tooltip = document.getElementById('fc-tooltip');
+      const iconOpen = document.getElementById('fc-icon-open');
+      const iconClose = document.getElementById('fc-icon-close');
+      
+      if (fcOpen) {
+        menu.classList.add('active');
+        tooltip.style.opacity = '0';
+        tooltip.style.transform = 'translateX(10px)';
+        iconOpen.style.transform = 'scale(0.5) rotate(90deg)';
+        iconOpen.style.opacity = '0';
+        iconClose.style.transform = 'scale(1) rotate(0deg)';
+        iconClose.style.opacity = '1';
+      } else {
+        menu.classList.remove('active');
+        tooltip.style.opacity = '1';
+        tooltip.style.transform = 'translateX(0)';
+        iconClose.style.transform = 'scale(0.5) rotate(-90deg)';
+        iconClose.style.opacity = '0';
+        iconOpen.style.transform = 'scale(1) rotate(0deg)';
+        iconOpen.style.opacity = '1';
+      }
+    }
+    
+    function closeFloatingContact() {
+      if(fcOpen) {
+        fcOpen = false;
+        toggleFloatingContact(false);
+      }
+    }
   </script>
 
 </body>
