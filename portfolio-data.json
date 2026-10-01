@@ -21,9 +21,9 @@
     "badge": "Full Stack Web Developer",
     "photo": "/photo.webp",
     "resumeUrl": "/resume.pdf",
-    "github": "https://github.com",
-    "linkedin": "https://linkedin.com",
-    "facebook": "https://facebook.com",
+    "github": "https://github.com/sahabulahmed",
+    "linkedin": "https://www.linkedin.com/in/sahabul-ahmed-asraf-?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+    "facebook": "https://www.facebook.com/share/1KJVUGsokV/",
     "email": "sahabulahmedasraf@gmail.com",
     "phone": "+880 1581-737320",
     "location": "Mirpur 10, Dhaka, Bangladesh"
@@ -230,7 +230,7 @@
       ],
       "image": "/projects/project-1.jpg",
       "live": "#",
-      "code": "https://github.com",
+      "code": "https://github.com/sahabulahmed",
       "challenges": "Building custom interactive carousels, responsive media cards, and real-time client-side search filtering without external frontend frameworks.",
       "improvements": "Integrate live TMDB / IMDb REST API, movie trailer embeds, and personalized user bookmarking."
     },
@@ -247,7 +247,7 @@
       ],
       "image": "/projects/project-2.jpg",
       "live": "#",
-      "code": "https://github.com",
+      "code": "https://github.com/sahabulahmed",
       "challenges": "Handling database relations for room availability, dynamic date range calculations, and booking state verification.",
       "improvements": "Add automated email confirmation triggers and online payment gateway integration (SSLCommerz, bKash, Stripe)."
     },
@@ -281,7 +281,7 @@
       ],
       "image": "/projects/project-10.png",
       "live": "#",
-      "code": "https://github.com",
+      "code": "https://github.com/sahabulahmed",
       "challenges": "Facilitating direct marketplace interaction, item categorization, and clear product pricing displays for non-technical users.",
       "improvements": "Bangla language support, SMS alert integrations for farmers, and order tracking logistics."
     }
