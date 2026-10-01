@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><title>Admin</title>
+<style>
+:root{--bg:#02030a;--panel:#070a1c;--line:#1f2760;--blue:#1f3dff;--text:#e9ecf8;--mute:#8e96b8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,sans-serif}
+.w{max-width:860px;margin:0 auto;padding:24px 18px 120px}h1{font-size:22px}h2{font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:#6f86ff;margin:38px 0 12px}
+label{display:block;font-size:12px;color:var(--mute);margin:12px 0 4px}
+input,textarea{width:100%;background:var(--panel);border:1px solid var(--line);color:var(--text);border-radius:6px;padding:10px;font:inherit}
+input:focus,textarea:focus,button:focus-visible{outline:2px solid #3d5cff}textarea{min-height:90px;resize:vertical}
+button{background:var(--blue);color:#fff;border:0;border-radius:6px;padding:10px 18px;font:inherit;font-weight:600;cursor:pointer}
+button.sec{background:transparent;border:1px solid var(--line);color:var(--text)}button.del{background:#3a1020;color:#ff8da1;padding:6px 12px}
+.item{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:6px 14px 14px;margin-bottom:12px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.bar{position:fixed;left:0;right:0;bottom:0;background:#05071a;border-top:1px solid var(--line);padding:12px 18px;display:flex;gap:14px;align-items:center;justify-content:center}
+#msg{font-size:13px}.ok{color:#6ee7a0}.err{color:#ff8da1}img.pv{max-height:130px;border-radius:8px;background:#0a1060;display:block;margin-top:8px}
+#login{max-width:380px;margin:18vh auto;padding:0 18px}.box{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:12px 14px;margin-bottom:10px;overflow-wrap:anywhere}.box small{color:var(--mute)}
+@media(max-width:600px){.row{grid-template-columns:1fr}}
+</style></head><body>
+<div id="login"><h1>Admin login</h1><label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password"><p><button id="go">Log in</button> <span id="lmsg" class="err"></span></p></div>
+<div class="w" id="app" hidden><h1>Edit portfolio</h1>
+<h2>Photo</h2><label for="file">Upload a photo (PNG with transparent background works best)</label><input id="file" type="file" accept="image/*"><img class="pv" id="prev" alt="">
+<h2>Main info</h2><div id="main"></div>
+<div id="lists"></div>
+<h2>Inbox (contact form messages)</h2><div id="inbox">Loading…</div>
+<h2>Comments</h2><div id="cmts">Loading…</div>
+<div class="bar"><button id="save">Save changes</button><a href="/" target="_blank" style="color:#6f86ff">View site</a><span id="msg"></span></div></div>
+<script>
+const $=s=>document.querySelector(s);let C={},PW=sessionStorage.getItem('pw')||'';
+const MAIN=[['name','Full name'],['title','Job title'],['roles','Typing animation roles (comma separated)'],['availability','Availability label'],['tagline','Tagline'],['about','About me (blank line = new paragraph)','t'],['address','Address / location'],['email','Email'],['phone','Phone (as displayed)'],['whatsapp','WhatsApp number (digits only, with country code)'],['resumeUrl','Resume link (Google Drive / PDF URL)'],['github','GitHub URL'],['linkedin','LinkedIn URL'],['facebook','Facebook URL'],['telegram','Telegram URL'],['upcomingTitle','Upcoming project title'],['upcomingDesc','Upcoming project text','t']];
+const LISTS={
+ projects:['Projects',[['title','Title'],['desc','Description'],['tech','Tech (comma separated)'],['link','Live link'],['github','GitHub link'],['image','Image','img']]],
+ timeline:['Education & experience',[['type','Type (Education / Experience)'],['title','Title'],['place','Place'],['period','Period'],['desc','Details']]],
+ certificates:['Certificates',[['title','Title'],['issuer','Issuer'],['year','Year'],['link','Link']]],
+ skills:['Skills (bars)',[['name','Name'],['level','Level 0-100']]],
+ technologies:['Technologies',[['name','Name']]],
+ stats:['Stats',[['num','Number (e.g. 4+)'],['label','Label']]]};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const field=(k,l,v,t,a,ty)=>ty==='img'?`<label>${l}</label><input type="file" accept="image/*" data-img="${k}">${v?`<img class="pv" src="${esc(v)}" alt="">`:''}`:`<label>${l}</label>${t?`<textarea data-k="${k}" ${a||''}>${esc(v)}</textarea>`:`<input data-k="${k}" value="${esc(v)}" ${a||''}>`}`;
+function draw(){
+ $('#main').innerHTML=MAIN.map(([k,l,t])=>field(k,l,C[k],t,'data-main')).join('');$('#prev').src=C.photo||'';
+ $('#lists').innerHTML=Object.entries(LISTS).map(([n,[t,fs]])=>`<h2>${t}</h2>`+(C[n]||[]).map((it,i)=>`<div class="item" data-l="${n}" data-i="${i}"><div class="row">${fs.map(([k,l,ty])=>`<div>${field(k,l,it[k],0,'',ty)}</div>`).join('')}</div><p style="margin:10px 0 0"><button class="del" data-del="${n}:${i}">Remove</button></p></div>`).join('')+`<button class="sec" data-add="${n}">+ Add</button>`).join('')}
+function collect(){document.querySelectorAll('[data-main]').forEach(e=>C[e.dataset.k]=e.value);
+ document.querySelectorAll('.item').forEach(it=>{const l=it.dataset.l,i=+it.dataset.i;it.querySelectorAll('[data-k]').forEach(e=>C[l][i][e.dataset.k]=e.value)})}
+function shrink(f,w,q,cb){const im=new Image();im.onload=()=>{const s=Math.min(1,w/im.width),cv=document.createElement('canvas');cv.width=im.width*s;cv.height=im.height*s;cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);cb(cv.toDataURL('image/webp',q))};im.src=URL.createObjectURL(f)}
+document.addEventListener('click',e=>{const b=e.target;
+ if(b.dataset.add){collect();const n=b.dataset.add;C[n]=C[n]||[];C[n].push(Object.fromEntries(LISTS[n][1].map(([k])=>[k,''])));draw()}
+ if(b.dataset.del){collect();const[n,i]=b.dataset.del.split(':');C[n].splice(+i,1);draw()}
+ if(b.dataset.rm){api('DELETE',null,b.dataset.rm.split(':')[0]+'?id='+b.dataset.rm.split(':')[1]).then(()=>{inbox();comments()})}});
+document.addEventListener('change',e=>{const t=e.target,f=t.files&&t.files[0];if(!f)return;
+ if(t.id==='file')shrink(f,720,.85,d=>{C.photo=d;$('#prev').src=d;say('Photo ready. Click Save changes.',true)});
+ if(t.dataset.img){const it=t.closest('.item');collect();shrink(f,560,.7,d=>{C[it.dataset.l][+it.dataset.i][t.dataset.img]=d;draw();say('Image ready. Click Save changes.',true)})}});
+function say(t,ok){$('#msg').textContent=t;$('#msg').className=ok?'ok':'err'}
+function api(m,b,p){return fetch('/api/'+(p||'content'),{method:m,headers:{'Content-Type':'application/json','x-admin-password':PW},body:b?JSON.stringify(b):undefined})}
+$('#save').onclick=async()=>{collect();say('Saving…',true);try{const r=await api('PUT',C);const j=await r.json();say(r.ok?'Saved. Your site is updated.':j.error,r.ok)}catch(e){say('Could not save',false)}};
+const box=(x,key,body)=>`<div class="box"><b>${esc(x.name)}</b> <small>${esc(x.email||x.relation||'')} · ${new Date(x.date).toLocaleString()}</small>${key==='messages'?`<br><b>${esc(x.subject)}</b>`:''}<p style="margin:6px 0">${esc(body)}</p><button class="del" data-rm="${key}:${x.id}">Delete</button></div>`;
+async function inbox(){try{const r=await api('GET',null,'messages');const l=r.ok?await r.json():[];$('#inbox').innerHTML=l.map(x=>box(x,'messages',x.message)).join('')||'<small>No messages yet.</small>'}catch(e){}}
+async function comments(){try{const r=await api('GET',null,'comments');const l=r.ok?await r.json():[];$('#cmts').innerHTML=l.map(x=>box(x,'comments',x.comment)).join('')||'<small>No comments yet.</small>'}catch(e){}}
+async function start(){
+ try{C=await(await fetch('/default-content.json')).json()}catch(e){}
+ try{const r=await fetch('/api/content');if(r.ok)Object.assign(C,await r.json())}catch(e){}
+ $('#login').hidden=true;$('#app').hidden=false;draw();inbox();comments()}
+async function login(){PW=$('#pw').value||PW;try{const r=await api('POST');if(r.ok){sessionStorage.setItem('pw',PW);start()}else{$('#lmsg').textContent=r.status===401?'Wrong password':'Server not set up yet (see setup steps)'}}catch(e){$('#lmsg').textContent='Network error'}}
+$('#go').onclick=login;$('#pw').onkeydown=e=>{if(e.key==='Enter')login()};if(PW)login();
+</script></body></html>

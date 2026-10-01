@@ -1,0 +1,14 @@
+{
+  "name": "portfolio-sahabul",
+  "version": "1.0.0",
+  "description": "Personal Portfolio Website for Sahabul Ahmed Asraf",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build": "node build.js"
+  },
+  "keywords": ["portfolio", "fullstack", "developer", "tailwind", "figma"],
+  "author": "Sahabul Ahmed Asraf",
+  "license": "MIT"
+}
