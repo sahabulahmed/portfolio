@@ -114,7 +114,7 @@ let html = `<!DOCTYPE html>
         <span class="font-syne font-extrabold text-lg sm:text-2xl text-white tracking-wide transition-all group-hover:scale-[1.02]">
           <span class="text-cyan">Sahabul</span> Asraf
         </span>
-        <span class="text-[0.65rem] sm:text-[0.7rem] text-cyan2/80 tracking-widest uppercase font-mono -mt-1">Full Stack Dev</span>
+        <span class="text-[0.65rem] sm:text-[0.7rem] text-cyan2/80 tracking-widest uppercase font-mono -mt-1">Full Stack Developer</span>
       </div>
     </a>
     
