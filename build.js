@@ -109,32 +109,47 @@ let html = `<!DOCTYPE html>
       bottom: 24px !important;
       left: 24px !important;
       z-index: 99999 !important;
-      width: 48px !important;
-      height: 48px !important;
+      width: 50px !important;
+      height: 50px !important;
       border-radius: 50% !important;
       background-color: #0b1329 !important;
-      border: 1.5px solid #00d4ff !important;
+      border: none !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
       color: #00d4ff !important;
-      box-shadow: 0 0 15px rgba(0, 212, 255, 0.35) !important;
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.25) !important;
       cursor: pointer !important;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease !important;
       opacity: 0;
       transform: translateY(20px);
       pointer-events: none;
+      padding: 0 !important;
     }
     #back-to-top:hover {
-      background-color: #00d4ff !important;
-      color: #000000 !important;
       transform: scale(1.1) translateY(0) !important;
       box-shadow: 0 0 25px rgba(0, 212, 255, 0.6) !important;
+      color: #ffffff !important;
+    }
+    #back-to-top:hover .btt-arrow {
+      transform: translateY(-2px);
     }
     #back-to-top.show {
       opacity: 1 !important;
       transform: translateY(0) !important;
       pointer-events: auto !important;
+    }
+    .btt-svg-ring {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .btt-arrow {
+      transition: transform 0.2s ease;
+      z-index: 2;
     }
 
     #floating-contact {
@@ -1096,7 +1111,14 @@ let html = `<!DOCTYPE html>
 
   <!-- Floating Actions -->
   <button id="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Back to top">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+    <svg class="btt-svg-ring" viewBox="0 0 50 50">
+      <circle cx="25" cy="25" r="22" stroke="rgba(0, 212, 255, 0.18)" stroke-width="3" fill="none" />
+      <circle id="btt-progress" cx="25" cy="25" r="22" stroke="#00d4ff" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="138.23" stroke-dashoffset="138.23" style="transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dashoffset 0.1s linear;" />
+    </svg>
+    <svg class="btt-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="19" x2="12" y2="5"></line>
+      <polyline points="5 12 12 5 19 12"></polyline>
+    </svg>
   </button>
 
   <div id="floating-contact" onmouseleave="closeFloatingContact()">
@@ -1515,10 +1537,21 @@ let html = `<!DOCTYPE html>
       }, 1000);
     });
 
-    // Back to Top Button visibility
+    // Back to Top Button visibility & dynamic scroll progress fill
     const btt = document.getElementById('back-to-top');
+    const bttProgress = document.getElementById('btt-progress');
+    const bttCircumference = 2 * Math.PI * 22; // ~138.23
+
     function updateBackToTop() {
-      if (window.scrollY > 250) {
+      const scrollY = window.scrollY || window.pageYOffset;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? Math.min(Math.max(scrollY / docHeight, 0), 1) : 0;
+      
+      if (bttProgress) {
+        bttProgress.style.strokeDashoffset = bttCircumference - (progress * bttCircumference);
+      }
+
+      if (scrollY > 200) {
         btt.classList.add('show');
       } else {
         btt.classList.remove('show');
