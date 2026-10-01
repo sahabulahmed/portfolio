@@ -44,6 +44,10 @@ const server = http.createServer((req, res) => {
     urlPath = '/resume.pdf';
   } else if (urlPath === '/api/data') {
     urlPath = '/portfolio-data.json';
+  } else if (urlPath === '/injamam.jpg') {
+    urlPath = '/photo.webp';
+  } else if (urlPath === '/NavbarLogo.png') {
+    urlPath = '/navL.png';
   }
 
   // Handle mock API endpoints if needed
